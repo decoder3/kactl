@@ -102,82 +102,6 @@ class segtree {
     pull(x, z);
   }
  
-  int find_first_knowingly(int x, int l, int r, const function<bool(const node&)> &f) {
-    if (l == r) {
-      return l;
-    }
-    push(x, l, r);
-    int y = (l + r) >> 1;
-    int z = x + ((y - l + 1) << 1);
-    int res;
-    if (f(tree[x + 1])) {
-      res = find_first_knowingly(x + 1, l, y, f);
-    } else {
-      res = find_first_knowingly(z, y + 1, r, f);
-    }
-    pull(x, z);
-    return res;
-  }
- 
-  int find_first(int x, int l, int r, int ll, int rr, const function<bool(const node&)> &f) {
-    if (ll <= l && r <= rr) {
-      if (!f(tree[x])) {
-        return -1;
-      }
-      return find_first_knowingly(x, l, r, f);
-    }
-    push(x, l, r);
-    int y = (l + r) >> 1;
-    int z = x + ((y - l + 1) << 1);
-    int res = -1;
-    if (ll <= y) {
-      res = find_first(x + 1, l, y, ll, rr, f);
-    }
-    if (rr > y && res == -1) {
-      res = find_first(z, y + 1, r, ll, rr, f);
-    }
-    pull(x, z);
-    return res;
-  }
- 
-  int find_last_knowingly(int x, int l, int r, const function<bool(const node&)> &f) {
-    if (l == r) {
-      return l;
-    }
-    push(x, l, r);
-    int y = (l + r) >> 1;
-    int z = x + ((y - l + 1) << 1);
-    int res;
-    if (f(tree[z])) {
-      res = find_last_knowingly(z, y + 1, r, f);
-    } else {
-      res = find_last_knowingly(x + 1, l, y, f);
-    }
-    pull(x, z);
-    return res;
-  }
- 
-  int find_last(int x, int l, int r, int ll, int rr, const function<bool(const node&)> &f) {
-    if (ll <= l && r <= rr) {
-      if (!f(tree[x])) {
-        return -1;
-      }
-      return find_last_knowingly(x, l, r, f);
-    }
-    push(x, l, r);
-    int y = (l + r) >> 1;
-    int z = x + ((y - l + 1) << 1);
-    int res = -1;
-    if (rr > y) {
-      res = find_last(z, y + 1, r, ll, rr, f);
-    }
-    if (ll <= y && res == -1) {
-      res = find_last(x + 1, l, y, ll, rr, f);
-    }
-    pull(x, z);
-    return res;
-  }
- 
   segtree(int _n) : n(_n) {
     assert(n > 0);
     tree.resize(2 * n - 1);
@@ -190,34 +114,5 @@ class segtree {
     assert(n > 0);
     tree.resize(2 * n - 1);
     build(0, 0, n - 1, v);
-  }
- 
-  node get(int ll, int rr) {
-    assert(0 <= ll && ll <= rr && rr <= n - 1);
-    return get(0, 0, n - 1, ll, rr);
-  }
- 
-  node get(int p) {
-    assert(0 <= p && p <= n - 1);
-    return get(0, 0, n - 1, p, p);
-  }
- 
-  template <typename... M>
-  void modify(int ll, int rr, const M&... v) {
-    assert(0 <= ll && ll <= rr && rr <= n - 1);
-    modify(0, 0, n - 1, ll, rr, v...);
-  }
- 
-  // find_first and find_last call all FALSE elements
-  // to the left (right) of the sought position exactly once
- 
-  int find_first(int ll, int rr, const function<bool(const node&)> &f) {
-    assert(0 <= ll && ll <= rr && rr <= n - 1);
-    return find_first(0, 0, n - 1, ll, rr, f);
-  }
- 
-  int find_last(int ll, int rr, const function<bool(const node&)> &f) {
-    assert(0 <= ll && ll <= rr && rr <= n - 1);
-    return find_last(0, 0, n - 1, ll, rr, f);
   }
 };
