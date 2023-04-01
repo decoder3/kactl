@@ -1,6 +1,11 @@
-/*
-.
-*/
+/**
+ * Author: Simon Lindholm
+ * Date: 2016-01-14
+ * License: CC0
+ * Description: .
+ * Time: .
+ * Status: Tested at CodeForces
+ */
 class segtree {
  public:
   struct node {

@@ -10,6 +10,7 @@ typedef vector<int> vi;
 #pragma GCC target("avx,avx2,fma")
 mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
 // cout << fixed << setprecision(25);
+
 int main() {
   cin.tie(0)->sync_with_stdio(0);
   cin.exceptions(cin.failbit);
